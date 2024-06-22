@@ -9,7 +9,7 @@ meta.
 O projeto em questão deve consumir uma API de mapa e ter o hardware de camera para o resigtro de refeição do usuário, sendo usadas para gerenciar suas metricas alimentares.
 
 ## Tecnologias Usadas:
-React Native e Node.js foram as principais ferramentas para este aplicativo. No entanto, muitas bibliotecas externas também foram usadas em seu desenvolvimento como o tão
+A linguagem de programação escolhida foi o Typescript, juntamente do React Native e do Node.js. No entanto, muitas bibliotecas externas também foram usadas em seu desenvolvimento como o tão
 famoso styled components para algumas estilizações e react-native-elements para alguns componentes pre-definidos.
 
 ## Como iniciar o projeto
