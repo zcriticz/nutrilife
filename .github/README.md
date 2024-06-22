@@ -12,6 +12,9 @@ O projeto em questão deve consumir uma API de mapa e ter o hardware de camera p
 A linguagem de programação escolhida foi o Typescript, juntamente do React Native e do Node.js. No entanto, muitas bibliotecas externas também foram usadas em seu desenvolvimento como o tão
 famoso styled components para algumas estilizações e react-native-elements para alguns componentes pre-definidos.
 
+## Dependencias
+Eu costumo usar o Yarn para instalar minhas bibliotecas ao invés do classico NPM, já que o Yarn possui uma serie de vantagens como compactação, desempenho e entre outros.
+
 ## Como iniciar o projeto
 No seu terminal, com o caminho do repositório definido, digite o seguinte comando:
 
