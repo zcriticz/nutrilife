@@ -27,6 +27,8 @@ Vale lembrar que algumas bibliotecas adicionais foram usadas também, como o fam
 npx expo start
 ```
 
+<br/>
+
 ### Alternativas
 
 ```
@@ -35,6 +37,7 @@ expo start
 
 Este comando está sendo considerado obsoleto pela versão atual do Expo, por isso: CUIDADO!
 
+<br/>
 <br/>
 
 Para maior compatibilidade com o yarn package
