@@ -23,6 +23,23 @@ O projeto em questão deve consumir uma API de mapa e ter o hardware de câmera 
 npx expo start
 ```
 
+#### Alternativas
+
+```
+expo start
+```
+
+Este comando está sendo considerado obsoleto pela versão atual do Expo, por isso: CUIDADO!
+
+<br/>
+
+Para maior compatibilidade com o yarn package
+
+```
+yarn start
+```
+Mas lembre-se de definir o script no arquivo **package.json**
+
 <br/>
 
 ## Contribuição
