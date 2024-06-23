@@ -38,7 +38,6 @@ expo start
 Este comando está sendo considerado obsoleto pela versão atual do Expo, por isso: CUIDADO!
 
 <br/>
-<br/>
 
 ```
 yarn start
