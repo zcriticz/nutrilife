@@ -16,6 +16,10 @@ O projeto em questão deve consumir uma API de mapa e ter o hardware de câmera 
 
 <br/>
 
+Vale lembrar que algumas bibliotecas adicionais foram usadas também, como o famoso styled-components para estilização.
+
+<br/>
+
 ## Iniciando o Projeto
 **No seu terminal, com o caminho do repositório definido, digite o seguinte comando:**
 
@@ -23,7 +27,7 @@ O projeto em questão deve consumir uma API de mapa e ter o hardware de câmera 
 npx expo start
 ```
 
-#### Alternativas
+### Alternativas
 
 ```
 expo start
