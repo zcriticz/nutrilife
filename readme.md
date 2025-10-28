@@ -1,5 +1,7 @@
-<div align="center">
-  <img src="../client/src/assets/commons/icon.png" alt="NutriLife" width="100" />
+<div>
+  <div align="center">
+    <img src="https://i.imgur.com/ST79ClL.png" width="100">
+  </div>
 </div>
 
 ## About
