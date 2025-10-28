@@ -1,13 +1,16 @@
 import { create } from "zustand";
 
+export type Level = "nenhum" | "leve" | "moderado" | "pesado";
+export type Objective = "hipertrofia" | "definição" | "emagrecimento";
+
 export type User = {
 	name: string;
 	age: number;
 	weight: number;
 	height: number;
 	gender: "M" | "F";
-	level: string;
-	objective: string;
+	level: Level;
+	objective: Objective;
 };
 
 type DataState = {
@@ -22,8 +25,8 @@ export const useDataStore = create<DataState>((set) => ({
 		age: 0,
 		weight: 0,
 		height: 0,
-		level: "",
-		objective: "",
+		level: "nenhum",
+		objective: "hipertrofia",
 		gender: "M",
 	},
 	setPageOne: (data) =>
