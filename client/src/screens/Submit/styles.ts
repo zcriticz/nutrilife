@@ -11,8 +11,8 @@ export const styles = StyleSheet.create({
 		backgroundColor: colors.white,
 	},
 	logo: {
-		width: width * 0.4,
-		height: height * 0.08,
+		width: width * 0.3,
+		height: height * 0.06,
 		resizeMode: "contain",
 	},
 	title: {
