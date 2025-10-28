@@ -4,24 +4,37 @@ import { useNavigation } from "@react-navigation/native";
 import { StackTypes } from "../../routes/stackRoutes";
 import { styles } from "./styles";
 import { buttonStyles } from "../../styles/Button/styles";
-import Input from "../../components/Input";
-import { useDataStore } from "../../store/data";
+import OptionSelector from "../../components/OptionSelector";
+import { useDataStore, Level, Objective } from "../../store/data";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 const schema = z.object({
-	level: z.string().min(1, { message: "Selecione seu nível de atividade" }),
-	objective: z.string().min(1, { message: "Selecione seu objetivo" }),
+	level: z.enum(["nenhum", "leve", "moderado", "pesado"]),
+	objective: z.enum(["hipertrofia", "definição", "emagrecimento"]),
 });
 
 type FormDataInput = z.infer<typeof schema>;
 
 type FormData = {
-	level: string;
-	objective: string;
+	level: Level;
+	objective: Objective;
 };
+
+const levelOptions = [
+	{ value: "nenhum", label: "Nenhum" },
+	{ value: "leve", label: "Leve" },
+	{ value: "moderado", label: "Moderado" },
+	{ value: "pesado", label: "Pesado" },
+];
+
+const objectiveOptions = [
+	{ value: "hipertrofia", label: "Hipertrofia" },
+	{ value: "definição", label: "Definição" },
+	{ value: "emagrecimento", label: "Emagrecimento" },
+];
 
 export default function Create() {
 	const navigation = useNavigation<StackTypes>();
@@ -51,22 +64,24 @@ export default function Create() {
 				source={require("../../assets/commons/icon.png")}
 				style={styles.logo}
 			/>
-			<Text style={styles.title}>Preencha os dados adicionais</Text>
+			<Text style={styles.title}>
+				Preencha os dados adicionais para finalizarmos
+			</Text>
 
-			<Input
+			<OptionSelector
 				name="level"
 				control={control}
-				placeholder="Seu nível de atividade"
+				options={levelOptions}
 				error={errors.level?.message}
-				keyboardType="default"
+				label="Nível de Atividade"
 			/>
 
-			<Input
+			<OptionSelector
 				name="objective"
 				control={control}
-				placeholder="Seu objetivo"
+				options={objectiveOptions}
 				error={errors.objective?.message}
-				keyboardType="default"
+				label="Seu Objetivo"
 			/>
 
 			<TouchableOpacity
