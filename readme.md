@@ -1,10 +1,7 @@
-<div>
-  <div align="center">
+<div align="center">
     <img src="https://i.imgur.com/ST79ClL.png" width="100">
-  </div>
+    <h1>NutriLife</h1>
 </div>
-
-## About
 
 **NutriLife** is an app that creates personalized diets according to each user's profile, using our business rules and leveraging information through integrated artificial intelligence.
 
@@ -111,6 +108,10 @@ pnpm dev
 - Add documentation for each new feature (README in the corresponding directory)
 - For bug fixes and features, submit descriptive pull requests
 - Before contributing, open issues to align on major changes
+
+## Author:
+
+[Cristian Santos](https://github.com/zcriticz)
 
 ## License
 
