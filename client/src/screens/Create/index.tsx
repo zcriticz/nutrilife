@@ -60,14 +60,6 @@ export default function Create() {
 
 	return (
 		<View style={styles.container}>
-			<Image
-				source={require("../../assets/commons/icon.png")}
-				style={styles.logo}
-			/>
-			<Text style={styles.title}>
-				Preencha os dados adicionais para finalizarmos
-			</Text>
-
 			<OptionSelector
 				name="level"
 				control={control}
