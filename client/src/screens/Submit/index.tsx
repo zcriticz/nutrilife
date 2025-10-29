@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackTypes } from "../../routes/stackRoutes";
 import { styles } from "./styles";
@@ -82,13 +82,7 @@ export default function Submit() {
 
 	return (
 		<View style={styles.container}>
-			<Image
-				source={require("../../assets/commons/icon.png")}
-				style={styles.logo}
-			/>
-			<Text style={styles.title}>
-				Preencha os campos abaixo para gerar sua dieta!
-			</Text>
+			<Text style={styles.title}>Conte-me um pouco sobre você</Text>
 
 			<GenderSelector
 				name="gender"
@@ -129,7 +123,7 @@ export default function Submit() {
 				style={buttonStyles.button}
 				onPress={handleSubmit(handleRegister)}
 			>
-				<Text style={buttonStyles.buttonText}>Avançar</Text>
+				<Text style={buttonStyles.buttonText}>Próximo</Text>
 			</TouchableOpacity>
 		</View>
 	);
