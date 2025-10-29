@@ -16,8 +16,14 @@ export const styles = StyleSheet.create({
 		resizeMode: "contain",
 	},
 	title: {
+		fontSize: width * 0.05,
+		textAlign: "center",
+		fontWeight: "bold",
+		marginTop: height * 0.02,
+		marginBottom: height * 0.02,
+	},
+	subTitle: {
 		fontSize: width * 0.04,
-		maxWidth: width * 0.8,
 		textAlign: "center",
 		fontWeight: "bold",
 		marginTop: height * 0.02,
