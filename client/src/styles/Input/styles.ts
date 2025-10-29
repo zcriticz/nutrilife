@@ -14,7 +14,7 @@ export const inputStyles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "#e0e0e0",
 		borderRadius: 8,
-		textAlign: "left",
+		textAlign: "center",
 	},
 	errorText: {
 		color: "red",
