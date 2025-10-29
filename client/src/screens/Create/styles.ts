@@ -10,14 +10,8 @@ export const styles = StyleSheet.create({
 		justifyContent: "center",
 		backgroundColor: colors.white,
 	},
-	logo: {
-		width: width * 0.3,
-		height: height * 0.06,
-		resizeMode: "contain",
-	},
 	title: {
-		fontSize: width * 0.04,
-		maxWidth: width * 0.8,
+		fontSize: width * 0.05,
 		textAlign: "center",
 		fontWeight: "bold",
 		marginTop: height * 0.02,
