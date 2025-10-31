@@ -37,6 +37,8 @@ Both modules follow a modular architecture, recommended standardization practice
 
 [![Nodejs](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/en)
 
+[![PNPM](https://img.shields.io/badge/pnpm-22272E?style=for-the-badge&logo=pnpm&logoColor=F69220)](https://pnpm.io/)
+
 ## Client Specifications
 
 - Modular architecture with reusable components
@@ -60,14 +62,14 @@ Both modules follow a modular architecture, recommended standardization practice
 - Install [Node.js](https://nodejs.org/en) (version 18 or higher)
 - Install pnpm: `npm install -g pnpm`
 
-## Clone the repository
+## Get Starting
+
+### Clone the repository
 
 ```sh
 git clone https://github.com/zcriticz/nutrilife
 cd nutrilife
 ```
-
----
 
 ### Install dependencies
 
@@ -88,18 +90,20 @@ pnpm install
 #### Run the client side
 
 ```sh
-cd client
+cd ../client
 pnpm expo start
 ```
 
 #### Run the server side
 
 ```sh
-cd server
+cd ../server
 pnpm dev
 ```
 
 **Edit the `.env` files on both sides as needed for local/remote configuration.**
+
+## Build
 
 ## Code Contribution Standards
 
@@ -109,9 +113,12 @@ pnpm dev
 - For bug fixes and features, submit descriptive pull requests
 - Before contributing, open issues to align on major changes
 
-## Author:
+## Authors:
 
-[Cristian Santos](https://github.com/zcriticz)
+- **Cristian Santos** - **Fullstack Developer**
+  - [GitHub Profile](https://github.com/zcriticz)
+- **Mikaias Santos** - **Designer**
+  - [GitHub Profile](https://github.com/)
 
 ## License
 
