@@ -3,6 +3,12 @@
     <h1>NutriLife</h1>
 </div>
 
+<p align="center">
+    <a href="https://github.com/zcriticz/nutrilife/stargazers"><img src="https://img.shields.io/github/stars/zcriticz/nutrilife?colorA=363a4f&colorB=b7bdf8&style=for-the-badge"></a>
+    <a href="https://github.com/zcriticz/nutrilife/issues"><img src="https://img.shields.io/github/issues/zcriticz/nutrilife?colorA=363a4f&colorB=f5a97f&style=for-the-badge"></a>
+    <a href="https://github.com/zcriticz/nutrilife/contributors"><img src="https://img.shields.io/github/contributors/zcriticz/nutrilife?colorA=363a4f&colorB=a6da95&style=for-the-badge"></a>
+</p>
+
 **NutriLife** is an app that creates personalized diets according to each user's profile, using our business rules and leveraging information through integrated artificial intelligence.
 
 This repository contains the complete solution, development, technologies, and instructions for running and contributing, should you be interested.
@@ -39,6 +45,8 @@ Both modules follow a modular architecture, recommended standardization practice
 
 [![PNPM](https://img.shields.io/badge/pnpm-22272E?style=for-the-badge&logo=pnpm&logoColor=F69220)](https://pnpm.io/)
 
+**For more details, like library's used, read the `package.json`**
+
 ## Client Specifications
 
 - Modular architecture with reusable components
@@ -71,6 +79,8 @@ git clone https://github.com/zcriticz/nutrilife
 cd nutrilife
 ```
 
+---
+
 ### Install dependencies
 
 #### Frontend
@@ -87,6 +97,8 @@ cd ../server
 pnpm install
 ```
 
+---
+
 #### Run the client side
 
 ```sh
@@ -101,9 +113,35 @@ cd ../server
 pnpm dev
 ```
 
-**Edit the `.env` files on both sides as needed for local/remote configuration.**
+> **Edit the `.env` files on both sides as needed for local/remote configuration. Don't forgive this or the API don't work.**
 
 ## Build
+
+1. Install the necessaries dependencies
+
+You can install globally in your computer
+
+```
+npm install -g eas-cli
+```
+
+Or locally
+
+```
+pnpm dlx eas-cli
+```
+
+2.  Create an account Expo to use **EAS**. You can make this of Expo app or his website. After, login in your account
+
+```
+eas login
+```
+
+3.  EAS initialize
+
+```
+eas init
+```
 
 ## Code Contribution Standards
 
@@ -118,7 +156,7 @@ pnpm dev
 - **Cristian Santos** - **Fullstack Developer**
   - [GitHub Profile](https://github.com/zcriticz)
 - **Mikaias Santos** - **Designer**
-  - [GitHub Profile](https://github.com/)
+  - [GitHub Profile](https://github.com/mikaiassantos)
 
 ## License
 
