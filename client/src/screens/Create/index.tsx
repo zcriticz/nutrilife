@@ -1,11 +1,11 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { StackTypes } from "../../routes/stackRoutes";
 import { styles } from "./styles";
-import { buttonStyles } from "../../styles/Button/styles";
-import OptionSelector from "../../components/OptionSelector";
-import { useDataStore, Level, Objective } from "../../store/data";
+import { buttonStyles } from "@/styles/Button/styles";
+import OptionSelector from "@/components/OptionSelector";
+import { useNavigation } from "@react-navigation/native";
+import { StackTypes } from "@/routes/stackRoutes";
+import { useDataStore, Level, Objective } from "@/store/data";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
