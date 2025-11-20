@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { StackTypes } from "../../routes/stackRoutes";
+import Input from "@/components/Input";
+import GenderSelector from "@/components/GenderSelector";
 import { styles } from "./styles";
-import { buttonStyles } from "../../styles/Button/styles";
-import Input from "../../components/Input";
-import GenderSelector from "../../components/GenderSelector";
-import { useDataStore } from "../../store/data";
+import { buttonStyles } from "@/styles/Button/styles";
+import { useNavigation } from "@react-navigation/native";
+import { StackTypes } from "@/routes/stackRoutes";
+import { useDataStore } from "@/store/data";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
