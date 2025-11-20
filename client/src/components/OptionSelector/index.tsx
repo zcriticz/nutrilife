@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { Controller } from "react-hook-form";
 import { optionSelectorStyles } from "./styles";
+import { Controller } from "react-hook-form";
 
 interface Option {
 	value: string;
