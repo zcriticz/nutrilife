@@ -1,12 +1,12 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
-import { api } from "../../services/api";
-import { useNavigation } from "@react-navigation/native";
-import { StackTypes } from "../../routes/stackRoutes";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { styles } from "./styles";
+import { useNavigation } from "@react-navigation/native";
+import { StackTypes } from "@/routes/stackRoutes";
 import { useQuery } from "@tanstack/react-query";
-import { useDataStore } from "../../store/data";
-import { Data } from "../../types/data";
+import { api } from "@/services/api";
+import { Data } from "@/types/data";
+import { useDataStore } from "@/store/data";
 
 interface ResponseData {
 	data: Data;
