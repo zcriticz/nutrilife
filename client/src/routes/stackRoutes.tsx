@@ -3,10 +3,10 @@ import {
 	NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 
-import Welcome from "../screens/Welcome";
-import Submit from "../screens/Submit";
-import Create from "../screens/Create";
-import Nutrition from "../screens/Nutrition";
+import Welcome from "@/screens/Welcome";
+import Submit from "@/screens/Submit";
+import Create from "@/screens/Create";
+import Nutrition from "@/screens/Nutrition";
 
 const Stack = createNativeStackNavigator();
 
