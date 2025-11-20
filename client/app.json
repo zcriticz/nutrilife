@@ -4,11 +4,11 @@
 		"slug": "nutrilife",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./src/assets/commons/icon.png",
+		"icon": "./assets/commons/icon.png",
 		"userInterfaceStyle": "light",
 		"newArchEnabled": true,
 		"splash": {
-			"image": "./src/assets/commons/splash.png",
+			"image": "./assets/commons/splash.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},
@@ -17,7 +17,7 @@
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./src/assets/commons/maskable-icon.png",
+				"foregroundImage": "./assets/commons/maskable-icon.png",
 				"backgroundColor": "#ffffff"
 			}
 		}
