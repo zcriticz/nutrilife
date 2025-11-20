@@ -1,8 +1,6 @@
 import React from "react";
 import { View, Text, KeyboardTypeOptions, TextInput } from "react-native";
-
-import { inputStyles } from "../../styles/Input/styles";
-
+import { inputStyles } from "@/styles/Input/styles";
 import { Controller } from "react-hook-form";
 
 interface InputProps {
