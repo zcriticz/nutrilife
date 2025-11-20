@@ -1,9 +1,9 @@
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { View, Text, Image, TouchableOpacity } from "react-native";
-import { StackTypes } from "../../routes/stackRoutes";
-import { styles } from "./styles";
 import React, { useRef, useCallback } from "react";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import Swiper from "react-native-swiper";
+import { styles } from "./styles";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { StackTypes } from "@/routes/stackRoutes";
 
 export default function Welcome() {
 	const navigation = useNavigation<StackTypes>();
@@ -30,7 +30,7 @@ export default function Welcome() {
 				<View style={styles.container}>
 					<Image
 						style={styles.image}
-						source={require("../../assets/swiper/salad.png")}
+						source={require("../../../assets/swiper/salad.png")}
 					/>
 					<Text style={styles.title}>Bem vindo ao NutriLife!</Text>
 					<Text style={styles.subtext}>
@@ -41,7 +41,7 @@ export default function Welcome() {
 
 				<View style={styles.container}>
 					<Image
-						source={require("../../assets/swiper/camera.png")}
+						source={require("../../../assets/swiper/camera.png")}
 						style={styles.image}
 					/>
 					<Text style={styles.title}>Registre suas Refeições</Text>
@@ -54,7 +54,7 @@ export default function Welcome() {
 				<View style={styles.container}>
 					<Image
 						style={styles.image}
-						source={require("../../assets/swiper/goat.png")}
+						source={require("../../../assets/swiper/goat.png")}
 					/>
 					<Text style={styles.title}>Acompanhe Seu Progresso</Text>
 					<Text style={styles.subtext}>
