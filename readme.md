@@ -33,7 +33,7 @@ Both modules follow a modular architecture, recommended standardization practice
 
 ### Frontend
 
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
@@ -72,8 +72,6 @@ Both modules follow a modular architecture, recommended standardization practice
 - [Android Studio](https://developer.android.com/develop?hl=pt-br) is recommended for emulating the app
 
 ## Get Starting
-
-.
 
 ### Clone the repository
 
