@@ -69,8 +69,11 @@ Both modules follow a modular architecture, recommended standardization practice
 
 - Install [Node.js](https://nodejs.org/en) (version 18 or higher)
 - Install pnpm: `npm install -g pnpm`
+- [Android Studio](https://developer.android.com/develop?hl=pt-br) is recommended for emulating the app
 
 ## Get Starting
+
+.
 
 ### Clone the repository
 
