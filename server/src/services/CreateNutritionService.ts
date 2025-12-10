@@ -1,8 +1,10 @@
 import { DataProps } from "../controllers/CreateNutritionController";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { database } from "../lib/database";
 
 class CreateNutritionService {
   async execute({
+    userId,
     name,
     age,
     gender,
@@ -10,11 +12,19 @@ class CreateNutritionService {
     height,
     level,
     objective,
-  }: DataProps) {
+  }: DataProps & { userId: string }) {
     try {
-      const genAI = new GoogleGenerativeAI(process.env.API_KEY!);
+      if (!process.env.API_KEY) {
+        throw new Error("API_KEY não configurada. Configure a chave da API do Google AI no arquivo .env");
+      }
+
+      const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+      // Usando gemini-2.5-flash que está disponível na sua API
+      // Alternativas: "gemini-2.5-pro" (mais poderoso mas mais lento)
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
+      console.log("Iniciando geração de conteúdo com Google Gemini...");
+      
       const response = await model.generateContent(
         `Crie um plano nutricional personalizado para uma pessoa com as seguintes características:
 
@@ -62,26 +72,94 @@ class CreateNutritionService {
         - Personalize os alimentos de acordo com o objetivo da pessoa`
       );
 
-      console.log(JSON.stringify(response, null, 2));
+      console.log("Resposta recebida da API do Google Gemini");
 
-      if (response.response && response.response.candidates) {
-        const jsonText = response.response.candidates[0]?.content.parts[0]
-          .text as String;
-
-        let jsonString = jsonText
-          .replace(/```\w*\n/g, "")
-          .replace(/\n```/g, "")
-          .trim();
-
-        let jsonObject = JSON.parse(jsonString);
-
-        console.log("JSON retornado:", JSON.stringify(jsonObject, null, 2));
-
-        return { data: jsonObject };
+      if (!response.response || !response.response.candidates || response.response.candidates.length === 0) {
+        console.error("Resposta inválida:", JSON.stringify(response, null, 2));
+        throw new Error("A API do Google Gemini não retornou uma resposta válida");
       }
-    } catch (e) {
-      console.log("JSON Error", e);
-      throw new Error("Failed to create a nutrition plan");
+
+      const candidate = response.response.candidates[0];
+      
+      // Verificar se há bloqueio de segurança
+      if (candidate.finishReason && candidate.finishReason !== "STOP") {
+        console.error("Resposta bloqueada. Finish reason:", candidate.finishReason);
+        throw new Error(`A resposta foi bloqueada: ${candidate.finishReason}`);
+      }
+      
+      if (!candidate || !candidate.content || !candidate.content.parts || candidate.content.parts.length === 0) {
+        console.error("Candidato inválido:", JSON.stringify(candidate, null, 2));
+        throw new Error("Resposta da API do Google Gemini está vazia ou inválida");
+      }
+
+      const jsonText = candidate.content.parts[0].text as string;
+
+      if (!jsonText) {
+        throw new Error("A resposta da API do Google Gemini não contém texto");
+      }
+
+      let jsonString = jsonText
+        .replace(/```\w*\n/g, "")
+        .replace(/\n```/g, "")
+        .replace(/```json\n?/g, "")
+        .replace(/```\n?/g, "")
+        .trim();
+
+      let jsonObject;
+      try {
+        jsonObject = JSON.parse(jsonString);
+      } catch (parseError) {
+        console.error("Erro ao fazer parse do JSON:", parseError);
+        console.error("JSON recebido:", jsonString);
+        throw new Error("Erro ao processar a resposta da API. A resposta não é um JSON válido.");
+      }
+
+      console.log("JSON retornado:", JSON.stringify(jsonObject, null, 2));
+
+      // Salvar no banco de dados
+      const nutritionPlan = database.createNutritionPlan(
+        userId,
+        JSON.stringify(jsonObject)
+      );
+
+      return { data: jsonObject, id: nutritionPlan.id };
+    } catch (e: any) {
+      console.error("Erro no CreateNutritionService:", e);
+      console.error("Stack trace:", e.stack);
+      
+      // Tratar erros específicos da API do Google Gemini
+      const errorMessage = e.message || e.toString() || "";
+      
+      if (errorMessage.includes("API_KEY") || errorMessage.includes("API key")) {
+        throw new Error("Chave da API do Google Gemini não configurada ou inválida. Verifique o arquivo .env");
+      }
+      
+      if (errorMessage.includes("quota") || errorMessage.includes("limit") || errorMessage.includes("429")) {
+        throw new Error("Limite de requisições da API do Google Gemini excedido. Tente novamente mais tarde");
+      }
+      
+      if (errorMessage.includes("permission") || errorMessage.includes("403") || errorMessage.includes("401")) {
+        throw new Error("Sem permissão para usar a API do Google Gemini. Verifique se sua chave de API está correta e ativa");
+      }
+      
+      if (errorMessage.includes("network") || errorMessage.includes("ECONNREFUSED") || errorMessage.includes("ENOTFOUND")) {
+        throw new Error("Erro de conexão com a API do Google Gemini. Verifique sua conexão com a internet");
+      }
+      
+      if (errorMessage.includes("model") || errorMessage.includes("404")) {
+        throw new Error("Modelo do Google Gemini não encontrado. Verifique se o nome do modelo está correto");
+      }
+      
+      if (errorMessage.includes("safety") || errorMessage.includes("blocked")) {
+        throw new Error("A resposta foi bloqueada pelos filtros de segurança do Google Gemini. Tente ajustar o prompt");
+      }
+      
+      // Se já é uma mensagem de erro clara, re-lançar
+      if (errorMessage && !errorMessage.includes("Failed to create")) {
+        throw new Error(`Erro na API do Google Gemini: ${errorMessage}`);
+      }
+      
+      throw new Error(errorMessage || "Erro ao criar plano nutricional. Tente novamente.");
     }
   }
 }
