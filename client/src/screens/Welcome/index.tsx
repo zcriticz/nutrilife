@@ -67,7 +67,7 @@ export default function Welcome() {
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
 					style={styles.button}
-					onPress={() => navigation.navigate("Submit")}
+					onPress={() => navigation.navigate("Login")}
 				>
 					<Text style={styles.buttonText}>Próximo</Text>
 				</TouchableOpacity>
