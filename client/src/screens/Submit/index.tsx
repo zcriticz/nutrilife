@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import Input from "@/components/Input";
 import GenderSelector from "@/components/GenderSelector";
 import { styles } from "./styles";
@@ -7,6 +7,7 @@ import { buttonStyles } from "@/styles/Button/styles";
 import { useNavigation } from "@react-navigation/native";
 import { StackTypes } from "@/routes/stackRoutes";
 import { useDataStore } from "@/store/data";
+import { useAuthStore } from "@/store/auth";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -57,6 +58,22 @@ type FormData = {
 export default function Submit() {
 	const navigation = useNavigation<StackTypes>();
 	const setPageOne = useDataStore((state) => state.setPageOne);
+	const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+	useEffect(() => {
+		if (!isAuthenticated) {
+			Alert.alert(
+				"Autenticação necessária",
+				"Você precisa estar logado para criar um plano nutricional.",
+				[
+					{
+						text: "Fazer Login",
+						onPress: () => navigation.navigate("Login"),
+					},
+				]
+			);
+		}
+	}, [isAuthenticated, navigation]);
 
 	const {
 		control,
