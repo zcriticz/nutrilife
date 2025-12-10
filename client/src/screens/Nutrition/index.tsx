@@ -1,71 +1,193 @@
-import React from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { styles } from "./styles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackTypes } from "@/routes/stackRoutes";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/services/api";
 import { Data } from "@/types/data";
 import { useDataStore } from "@/store/data";
+import { useAuthStore } from "@/store/auth";
 
 interface ResponseData {
 	data: Data;
 }
 
+interface PlanResponseData {
+	plan: {
+		id: string;
+		data: Data;
+		createdAt: string;
+		updatedAt: string;
+	};
+}
+
 export default function Nutrition() {
 	const navigation = useNavigation<StackTypes>();
-
+	const route = useRoute();
+	const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 	const user = useDataStore((state) => state.user);
 
-	const { data, isFetching, error } = useQuery<ResponseData>({
-		queryKey: ["nutrition", user],
-		queryFn: async () => {
-			try {
-				if (!user || !user.name || !user.age || !user.weight) {
-					throw new Error("Dados do usuário incompletos");
+	// Pega o planId dos parâmetros da rota, se existir
+	const planId = (route.params as { planId?: string })?.planId;
+
+	useEffect(() => {
+		if (!isAuthenticated) {
+			Alert.alert(
+				"Autenticação necessária",
+				"Você precisa estar logado para criar um plano nutricional.",
+				[
+					{
+						text: "Fazer Login",
+						onPress: () => navigation.navigate("Login"),
+					},
+				]
+			);
+		}
+	}, [isAuthenticated, navigation]);
+
+	// Se planId existe, busca a receita existente; caso contrário, cria uma nova
+	const { data, isFetching, error } = useQuery<ResponseData | PlanResponseData>(
+		{
+			queryKey: planId ? ["nutrition-plan", planId] : ["nutrition", user],
+			queryFn: async () => {
+				try {
+					if (!isAuthenticated) {
+						throw new Error("Usuário não autenticado");
+					}
+
+					// Se planId existe, busca a receita existente
+					if (planId) {
+						const response = await api.get<PlanResponseData>(
+							`/nutrition/${planId}`
+						);
+
+						if (!response.data || !response.data.plan) {
+							throw new Error("Resposta inválida do servidor");
+						}
+
+						// Retorna no formato esperado pela interface ResponseData
+						return {
+							data: response.data.plan.data,
+						} as ResponseData;
+					}
+
+					// Caso contrário, cria uma nova receita
+					if (!user || !user.name || !user.age || !user.weight) {
+						throw new Error("Dados do usuário incompletos");
+					}
+
+					const response = await api.post<ResponseData>("/nutrition/create", {
+						name: user.name,
+						age: user.age,
+						weight: user.weight,
+						height: user.height,
+						gender: user.gender,
+						level: user.level,
+						objective: user.objective,
+					});
+
+					if (!response.data || !response.data.data) {
+						throw new Error("Resposta inválida do servidor");
+					}
+
+					return response.data;
+				} catch (e: any) {
+					console.error("Erro ao buscar dados da API:", e);
+
+					if (
+						e.response?.status === 401 ||
+						e.message === "Usuário não autenticado"
+					) {
+						Alert.alert("Sessão expirada", "Por favor, faça login novamente.", [
+							{
+								text: "OK",
+								onPress: () => navigation.navigate("Login"),
+							},
+						]);
+					}
+
+					if (e.response?.status === 404) {
+						Alert.alert(
+							"Plano não encontrado",
+							"O plano nutricional solicitado não foi encontrado.",
+							[
+								{
+									text: "Voltar",
+									onPress: () => navigation.navigate("NutritionList"),
+								},
+							]
+						);
+					}
+
+					const errorMessage =
+						e.response?.data?.error || e.message || planId
+							? "Erro ao carregar plano nutricional. Tente novamente."
+							: "Erro ao criar plano nutricional. Tente novamente.";
+
+					const serverError = new Error(errorMessage);
+					(serverError as any).response = e.response;
+
+					throw serverError;
 				}
-
-				const response = await api.post<ResponseData>("/create", {
-					name: user.name,
-					age: user.age,
-					weight: user.weight,
-					height: user.height,
-					gender: user.gender,
-					level: user.level,
-					objective: user.objective,
-				});
-
-				return response.data;
-			} catch (e) {
-				console.log("Erro ao buscar dados da API:", e);
-				throw e;
-			}
-		},
-		enabled: !!user && !!user.name && !!user.age && !!user.weight,
-	});
+			},
+			enabled: planId
+				? isAuthenticated
+				: isAuthenticated &&
+				  !!user &&
+				  !!user.name &&
+				  !!user.age &&
+				  !!user.weight,
+		}
+	);
 
 	if (isFetching) {
 		return (
 			<View style={styles.loading}>
-				<Text style={styles.loadingText}>Gerando sua dieta...</Text>
+				<Text style={styles.loadingText}>
+					{planId ? "Carregando sua dieta..." : "Gerando sua dieta..."}
+				</Text>
 			</View>
 		);
 	}
 
 	if (error) {
+		const errorMessage =
+			error instanceof Error
+				? error.message
+				: "Erro desconhecido ao carregar dieta";
+
 		return (
 			<View style={styles.loading}>
 				<Text style={styles.loadingText}>Falha ao carregar dieta</Text>
-				<TouchableOpacity onPress={() => navigation.navigate("Submit")}>
-					<Text style={styles.loadingText}>
-						Ainda estamos em beta, seja paciente e tente novamente
+				<Text
+					style={[
+						styles.loadingText,
+						{ marginTop: 10, fontSize: 14, color: "#ff6b6b" },
+					]}
+				>
+					{errorMessage}
+				</Text>
+				<TouchableOpacity
+					style={{
+						marginTop: 20,
+						padding: 10,
+						backgroundColor: "#4CAF50",
+						borderRadius: 8,
+					}}
+					onPress={() => navigation.navigate("Submit")}
+				>
+					<Text style={[styles.loadingText, { color: "#fff" }]}>
+						Tentar novamente
 					</Text>
 				</TouchableOpacity>
 			</View>
 		);
 	}
 
-	const nutritionData = data?.data;
+	// Extrai os dados da receita, seja de uma receita existente ou nova
+	// Ambos os casos retornam no formato ResponseData com a propriedade 'data'
+	const nutritionData = (data as ResponseData)?.data;
 
 	if (nutritionData) {
 		console.log("Dados recebidos:", JSON.stringify(nutritionData, null, 2));
