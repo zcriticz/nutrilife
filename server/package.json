@@ -1,25 +1,32 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "tsx watch src/server.ts"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.19.0",
-  "dependencies": {
-    "@fastify/cors": "^11.1.0",
-    "@google/generative-ai": "^0.24.1",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "fastify": "^5.6.1",
-    "tsx": "^4.20.6"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "typescript": "^5.9.3"
-  }
+	"name": "server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "tsx watch src/server.ts",
+		"dev:clean": "lsof -ti:3333 | xargs kill -9 2>/dev/null || true && tsx watch src/server.ts",
+		"cleanup:users": "tsx src/scripts/cleanupUsers.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.19.0",
+	"dependencies": {
+		"@fastify/cors": "^11.1.0",
+		"@fastify/jwt": "^10.0.0",
+		"@google/generative-ai": "^0.24.1",
+		"bcrypt": "^6.0.0",
+		"better-sqlite3": "^12.5.0",
+		"cors": "^2.8.5",
+		"dotenv": "^17.2.3",
+		"fastify": "^5.6.1",
+		"tsx": "^4.20.6"
+	},
+	"devDependencies": {
+		"@types/bcrypt": "^6.0.0",
+		"@types/better-sqlite3": "^7.6.13",
+		"@types/cors": "^2.8.19",
+		"typescript": "^5.9.3"
+	}
 }
