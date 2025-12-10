@@ -1,11 +1,12 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { styles } from "./styles";
 import { buttonStyles } from "@/styles/Button/styles";
 import OptionSelector from "@/components/OptionSelector";
 import { useNavigation } from "@react-navigation/native";
 import { StackTypes } from "@/routes/stackRoutes";
 import { useDataStore, Level, Objective } from "@/store/data";
+import { useAuthStore } from "@/store/auth";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,6 +40,22 @@ const objectiveOptions = [
 export default function Create() {
 	const navigation = useNavigation<StackTypes>();
 	const setPageTwo = useDataStore((state) => state.setPageTwo);
+	const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+	useEffect(() => {
+		if (!isAuthenticated) {
+			Alert.alert(
+				"Autenticação necessária",
+				"Você precisa estar logado para criar um plano nutricional.",
+				[
+					{
+						text: "Fazer Login",
+						onPress: () => navigation.navigate("Login"),
+					},
+				]
+			);
+		}
+	}, [isAuthenticated, navigation]);
 
 	const {
 		control,
