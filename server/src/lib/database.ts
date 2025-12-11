@@ -71,7 +71,6 @@ export const database = {
 		};
 	},
 
-	// Nutrition Plan operations
 	createNutritionPlan: (userId: string, data: string): NutritionPlan => {
 		const id = randomUUID();
 		const now = new Date().toISOString();
