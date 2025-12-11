@@ -24,10 +24,20 @@ Both modules follow a modular architecture, recommended standardization practice
 
 ## Features
 
-- **User registration**: Allows new users to add their personal information for data abstraction.
-- **Personalized nutritional profile**: Automatically calculates nutritional needs based on user parameters (age, weight, height, goal, etc.).
-- **AI-based diet recommendations**: Suggests intelligent meal plans according to preferences, restrictions, and goals.
-- **Food diary**: Daily recording of meals with automatic nutritional analysis.
+- **Onboarding Experience**: Welcome screen with interactive carousel showcasing app features
+- **User Authentication**: Complete registration and login system with JWT (JSON Web Tokens)
+- **User Registration**: Allows new users to create accounts with email and password
+- **Personalized Data Collection**: Collects detailed user information:
+  - Personal data (name, age, weight, height, gender)
+  - Physical activity level (none, light, moderate, heavy)
+  - Goal (hypertrophy, definition, weight loss)
+- **AI-Powered Nutrition Plans**: Generates personalized nutrition plans using Google Gemini AI (Gemini 2.5 Flash)
+- **Nutrition Plan Management**:
+  - Create personalized nutrition plans
+  - List all plans created by the user
+  - Detailed view of each plan with meals, macronutrients, and recommendations
+- **Persistent Storage**: Local storage of tokens and user data with AsyncStorage
+- **Offline-First Architecture**: Intelligent request caching with React Query
 
 ## Technologies Used
 
@@ -35,35 +45,87 @@ Both modules follow a modular architecture, recommended standardization practice
 
 [![React](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 
+[![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
+
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 [![PNPM](https://img.shields.io/badge/pnpm-22272E?style=for-the-badge&logo=pnpm&logoColor=F69220)](https://pnpm.io/)
+
+**Main libraries:**
+
+- **React Navigation**: Navigation between screens (Stack Navigator)
+- **Zustand**: Global state management (authentication and user data)
+- **React Query (TanStack Query)**: API data caching and synchronization
+- **React Hook Form + Zod**: Form validation with TypeScript
+- **Axios**: HTTP client with interceptors for authentication
+- **AsyncStorage**: Persistent local storage
+- **React Native Swiper**: Carousel component for onboarding
 
 ### Backend
 
 [![Nodejs](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/en)
 
+[![Fastify](https://img.shields.io/badge/Fastify-202020?style=for-the-badge&logo=fastify&logoColor=white)](https://www.fastify.io/)
+
 [![PNPM](https://img.shields.io/badge/pnpm-22272E?style=for-the-badge&logo=pnpm&logoColor=F69220)](https://pnpm.io/)
 
-**For more details, like library's used, read the `package.json`**
+**Main libraries:**
+
+- **Fastify**: Fast and efficient web framework
+- **Google Generative AI**: Integration with Gemini AI for nutrition plan generation
+- **Better SQLite3**: High-performance SQLite database
+- **JWT (JSON Web Tokens)**: Authentication and authorization
+- **Bcrypt**: Password hashing for security
+- **CORS**: Cross-Origin Resource Sharing configuration
+
+**For more details about the libraries used, check the `package.json` files**
 
 ## Client Specifications
 
-- Modular architecture with reusable components
-- Page-based structure
-- Centralized service consumption through the "services" layer
-- Strict typing with TypeScript
-- Direct integration with the routes exposed by the server
-- Easy addition of new features and screens
-- Standardization with ESLint and Prettier
-- Centralized configuration (env, build, among others)
+- **Modular Architecture**: Reusable components organized by functionality
+- **Screen-Based Structure**: Screen-based structure (Welcome, Login, Register, Submit, Create, Nutrition, NutritionList)
+- **State Management**:
+  - Zustand for global state (authentication and user data)
+  - React Query for API data caching and synchronization
+- **Form Validation**: Robust validation with React Hook Form and Zod
+- **Type Safety**: Strict typing with TypeScript throughout the application
+- **API Integration**: Centralized HTTP client with interceptors for automatic authentication
+- **Navigation**: Typed navigation with React Navigation (Stack Navigator)
+- **Error Handling**: Network and authentication error handling
+- **Loading States**: Loading states and visual feedback
+- **Code Quality**: Standardization with ESLint and Prettier
+- **Configuration**: Centralized configuration (env, build, etc.)
 
 ## Server Specifications
 
-- RESTful API structured in controllers and services
-- Versioned routes for easy maintenance
-- Strict application of lint/format and TypeScript across all layers
-- Isolated environment configuration with `.env`
+- **RESTful API**: REST API structured in controllers and services
+- **Architecture Pattern**: Separation of concerns (Controllers → Services → Database)
+- **Authentication**: JWT middleware for route protection
+- **Database**: SQLite with better-sqlite3 for local storage
+- **AI Integration**: Integration with Google Gemini AI (Gemini 2.5 Flash) for nutrition plan generation
+- **Error Handling**: Centralized error handling with descriptive messages
+- **Security**:
+  - Password hashing with bcrypt
+  - JWT authentication
+  - Input data validation
+- **Type Safety**: Strict typing with TypeScript across all layers
+- **Code Quality**: Rigorous application of lint/format and TypeScript
+- **Configuration**: Isolated environment configuration with `.env`
+- **Routes**: Organized routes protected by authentication when necessary
+
+### API Routes
+
+**Public Routes:**
+
+- `POST /auth/register` - Register new user
+- `POST /auth/login` - Login existing user
+
+**Protected Routes (require JWT authentication):**
+
+- `GET /auth/me` - Get authenticated user data
+- `POST /nutrition/create` - Create new nutrition plan
+- `GET /nutrition/list` - List all user plans
+- `GET /nutrition/:planId` - Get details of a specific plan
 
 ## Prerequisites
 
@@ -71,7 +133,7 @@ Both modules follow a modular architecture, recommended standardization practice
 - Install pnpm: `npm install -g pnpm`
 - [Android Studio](https://developer.android.com/develop?hl=pt-br) is recommended for emulating the app
 
-## Get Starting
+## Getting Started
 
 ### Clone the repository
 
@@ -114,43 +176,103 @@ cd ../server
 pnpm dev
 ```
 
-> **Edit the `.env` files on both sides as needed for local/remote configuration. Don't forgive this or the API don't work.**
+> **⚠️ Important: Configure the `.env` files on both sides (client and server) as needed for local/remote configuration. Without this, the API will not work.**
+
+### Environment Configuration
+
+#### Server (.env)
+
+```env
+DATABASE_URL=file:./dev.db
+JWT_SECRET=your-jwt-secret-key-here
+API_KEY=your-google-gemini-api-key-here
+```
+
+#### Client
+
+The client automatically detects the API base URL depending on the platform:
+
+- **Android Emulator**: `http://10.0.2.2:3333`
+- **iOS Simulator**: `http://localhost:3333`
+- **Physical Device**: Configure the local IP in the `src/services/api.ts` file
 
 ## Build
 
-1. Install the necessaries dependencies
+### Build Preparation
 
-You can install globally in your computer
+1. **Install EAS CLI**
 
-```
+You can install it globally on your computer:
+
+```sh
 npm install -g eas-cli
 ```
 
-Or locally
+Or use it locally:
 
-```
+```sh
 pnpm dlx eas-cli
 ```
 
-2.  Create an account Expo to use **EAS**. You can make this of Expo app or his website. After, login in your account
+2. **Create Expo Account**
 
-```
+Create an Expo account to use **EAS Build**. You can do this through the Expo app or website. Then, log in to your account:
+
+```sh
 eas login
 ```
 
-3.  EAS initialize
+3. **Initialize EAS**
+
+```sh
+cd client
+eas init
+```
+
+### Database Structure
+
+The server uses SQLite with the following tables:
+
+- **users**: Stores user information (id, email, password, name, createdAt, updatedAt)
+- **nutrition_plans**: Stores created nutrition plans (id, userId, data, createdAt, updatedAt)
+
+The database is created automatically on the first server run.
+
+## Project Structure
 
 ```
-eas init
+nutrilife/
+├── client/                 # React Native Application (Expo)
+│   ├── src/
+│   │   ├── components/     # Reusable components
+│   │   ├── screens/        # Application screens
+│   │   ├── routes/         # Navigation configuration
+│   │   ├── services/       # API services
+│   │   ├── store/          # State management (Zustand)
+│   │   ├── styles/         # Global styles
+│   │   └── types/          # TypeScript types
+│   └── assets/             # Images and resources
+│
+└── server/                 # Node.js API (Fastify)
+    ├── src/
+    │   ├── controllers/    # Route controllers
+    │   ├── services/       # Business logic
+    │   ├── middleware/     # Middlewares (auth, etc.)
+    │   ├── lib/            # Utilities (database, etc.)
+    │   ├── routes.ts       # Route definitions
+    │   └── server.ts       # Server configuration
+    └── dev.db              # SQLite database
 ```
 
 ## Code Contribution Standards
 
-- Maintain the standard defined by ESLint and Prettier (automatic execution on commits)
-- Use [Conventional Commits](https://www.conventionalcommits.org/) for commit conventions
-- Add documentation for each new feature (README in the corresponding directory)
-- For bug fixes and features, submit descriptive pull requests
-- Before contributing, open issues to align on major changes
+- **Code Style**: Maintain the standard defined by ESLint and Prettier (automatic execution on commits)
+- **Commits**: Use [Conventional Commits](https://www.conventionalcommits.org/) for commit conventions
+- **Documentation**: Add documentation for each new feature (README in the corresponding directory)
+- **Pull Requests**: For bug fixes and features, submit descriptive pull requests
+- **Issues**: Before contributing, open issues to align on major changes
+- **TypeScript**: Maintain strict typing throughout the code
+- **Testing**: Add tests when appropriate (future)
 
 ## Authors:
 
