@@ -72,7 +72,7 @@ export default function Create() {
 		};
 		setPageTwo(convertedData);
 
-		navigation.navigate("Nutrition");
+		navigation.navigate("NutritionList");
 	}
 
 	return (
