@@ -41,17 +41,17 @@ Both modules follow a modular architecture, recommended standardization practice
 
 ## Technologies Used
 
-### Frontend
-
-[![React](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 [![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+
+[![Nodejs](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/en)
 
 [![PNPM](https://img.shields.io/badge/pnpm-22272E?style=for-the-badge&logo=pnpm&logoColor=F69220)](https://pnpm.io/)
 
-**Main libraries:**
+**Frontend Main libraries:**
 
 - **React Navigation**: Navigation between screens (Stack Navigator)
 - **Zustand**: Global state management (authentication and user data)
@@ -61,15 +61,7 @@ Both modules follow a modular architecture, recommended standardization practice
 - **AsyncStorage**: Persistent local storage
 - **React Native Swiper**: Carousel component for onboarding
 
-### Backend
-
-[![Nodejs](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/en)
-
-[![Fastify](https://img.shields.io/badge/Fastify-202020?style=for-the-badge&logo=fastify&logoColor=white)](https://www.fastify.io/)
-
-[![PNPM](https://img.shields.io/badge/pnpm-22272E?style=for-the-badge&logo=pnpm&logoColor=F69220)](https://pnpm.io/)
-
-**Main libraries:**
+**Backend Main libraries:**
 
 - **Fastify**: Fast and efficient web framework
 - **Google Generative AI**: Integration with Gemini AI for nutrition plan generation
@@ -95,6 +87,14 @@ Both modules follow a modular architecture, recommended standardization practice
 - **Loading States**: Loading states and visual feedback
 - **Code Quality**: Standardization with ESLint and Prettier
 - **Configuration**: Centralized configuration (env, build, etc.)
+
+### API Usage Client Side
+
+The client automatically detects the API base URL depending on the platform:
+
+- **Android Emulator**: `http://10.0.2.2:3333`
+- **iOS Simulator**: `http://localhost:3333`
+- **Physical Device**: Configure the local IP in the `src/services/api.ts` file
 
 ## Server Specifications
 
@@ -127,56 +127,14 @@ Both modules follow a modular architecture, recommended standardization practice
 - `GET /nutrition/list` - List all user plans
 - `GET /nutrition/:planId` - Get details of a specific plan
 
-## Prerequisites
+### Database Structure
 
-- Install [Node.js](https://nodejs.org/en) (version 18 or higher)
-- Install pnpm: `npm install -g pnpm`
-- [Android Studio](https://developer.android.com/develop?hl=pt-br) is recommended for emulating the app
+The server uses SQLite with the following tables:
 
-## Getting Started
+- **users**: Stores user information (id, email, password, name, createdAt, updatedAt)
+- **nutrition_plans**: Stores created nutrition plans (id, userId, data, createdAt, updatedAt)
 
-### Clone the repository
-
-```sh
-git clone https://github.com/zcriticz/nutrilife
-cd nutrilife
-```
-
----
-
-### Install dependencies
-
-#### Frontend
-
-```sh
-cd client
-pnpm install
-```
-
-#### Backend
-
-```sh
-cd ../server
-pnpm install
-```
-
----
-
-#### Run the client side
-
-```sh
-cd ../client
-pnpm expo start
-```
-
-#### Run the server side
-
-```sh
-cd ../server
-pnpm dev
-```
-
-> **⚠️ Important: Configure the `.env` files on both sides (client and server) as needed for local/remote configuration. Without this, the API will not work.**
+The database is created automatically on the first server run.
 
 ### Environment Configuration
 
@@ -188,13 +146,52 @@ JWT_SECRET=your-jwt-secret-key-here
 API_KEY=your-google-gemini-api-key-here
 ```
 
-#### Client
+## Prerequisites
 
-The client automatically detects the API base URL depending on the platform:
+- Install [Node.js](https://nodejs.org/en) (version 18 or higher)
+- Install pnpm: `npm install -g pnpm`
+- [Android Studio](https://developer.android.com/develop?hl=pt-br) is recommended for emulating the app
 
-- **Android Emulator**: `http://10.0.2.2:3333`
-- **iOS Simulator**: `http://localhost:3333`
-- **Physical Device**: Configure the local IP in the `src/services/api.ts` file
+## Getting Started
+
+1. Clone the repository
+
+```sh
+git clone https://github.com/zcriticz/nutrilife
+cd nutrilife
+```
+
+2. Install dependencies
+
+- Front
+
+```sh
+cd client
+pnpm install
+```
+
+- Back
+
+```sh
+cd ../server
+pnpm install
+```
+
+3. Run the client side
+
+```sh
+cd ../client
+pnpm expo start
+```
+
+4. Run the server side
+
+```sh
+cd ../server
+pnpm dev
+```
+
+> **⚠️ Important: configure the `.env` files on both sides (client and server) as needed for local/remote configuration. Without this, the API will not work.**
 
 ## Build
 
@@ -202,13 +199,13 @@ The client automatically detects the API base URL depending on the platform:
 
 1. **Install EAS CLI**
 
-You can install it globally on your computer:
+- You can install it globally on your computer:
 
 ```sh
 npm install -g eas-cli
 ```
 
-Or use it locally:
+- Or use it locally:
 
 ```sh
 pnpm dlx eas-cli
@@ -216,7 +213,7 @@ pnpm dlx eas-cli
 
 2. **Create Expo Account**
 
-Create an Expo account to use **EAS Build**. You can do this through the Expo app or website. Then, log in to your account:
+- Create an Expo account to use **EAS Build**. You can do this through the Expo app or website. Then, log in to your account:
 
 ```sh
 eas login
@@ -227,41 +224,6 @@ eas login
 ```sh
 cd client
 eas init
-```
-
-### Database Structure
-
-The server uses SQLite with the following tables:
-
-- **users**: Stores user information (id, email, password, name, createdAt, updatedAt)
-- **nutrition_plans**: Stores created nutrition plans (id, userId, data, createdAt, updatedAt)
-
-The database is created automatically on the first server run.
-
-## Project Structure
-
-```
-nutrilife/
-├── client/                 # React Native Application (Expo)
-│   ├── src/
-│   │   ├── components/     # Reusable components
-│   │   ├── screens/        # Application screens
-│   │   ├── routes/         # Navigation configuration
-│   │   ├── services/       # API services
-│   │   ├── store/          # State management (Zustand)
-│   │   ├── styles/         # Global styles
-│   │   └── types/          # TypeScript types
-│   └── assets/             # Images and resources
-│
-└── server/                 # Node.js API (Fastify)
-    ├── src/
-    │   ├── controllers/    # Route controllers
-    │   ├── services/       # Business logic
-    │   ├── middleware/     # Middlewares (auth, etc.)
-    │   ├── lib/            # Utilities (database, etc.)
-    │   ├── routes.ts       # Route definitions
-    │   └── server.ts       # Server configuration
-    └── dev.db              # SQLite database
 ```
 
 ## Code Contribution Standards
