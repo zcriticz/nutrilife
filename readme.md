@@ -163,28 +163,30 @@ cd nutrilife
 
 2. Install dependencies
 
-- Front
+- Frontend
 
 ```sh
 cd client
 pnpm install
 ```
 
-- Back
+- Backend
 
 ```sh
 cd ../server
 pnpm install
 ```
 
-3. Run the client side
+1. Run the application
+
+- Client Side
 
 ```sh
 cd ../client
 pnpm expo start
 ```
 
-4. Run the server side
+- Server Side
 
 ```sh
 cd ../server
