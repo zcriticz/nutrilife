@@ -1,10 +1,11 @@
 import bcrypt from "bcrypt";
+import { randomBytes } from "crypto";
 import { database } from "../lib/database";
 
 export interface RegisterData {
 	email: string;
 	password: string;
-	name?: string;
+	name: string;
 }
 
 export interface LoginData {
@@ -22,12 +23,12 @@ class AuthService {
 
 		const hashedPassword = await bcrypt.hash(password, 8);
 
-		const user = database.createUser(email, hashedPassword, name || null);
+		const user = database.createUser(email, hashedPassword, name);
 
 		return {
 			id: user.id,
 			email: user.email,
-			name: user.name,
+			name: user.name || "",
 			createdAt: user.createdAt,
 		};
 	}
@@ -48,7 +49,7 @@ class AuthService {
 		return {
 			id: user.id,
 			email: user.email,
-			name: user.name,
+			name: user.name || "",
 		};
 	}
 
@@ -62,8 +63,57 @@ class AuthService {
 		return {
 			id: user.id,
 			email: user.email,
-			name: user.name,
+			name: user.name || "",
 			createdAt: user.createdAt,
+		};
+	}
+
+	async forgotPassword(email: string) {
+		const user = database.findUserByEmail(email);
+
+		if (!user) {
+			return {
+				message:
+					"Se o email existir, você receberá um link para redefinir sua senha",
+			};
+		}
+
+		const token = randomBytes(32).toString("hex");
+
+		const expiresAt = new Date();
+		expiresAt.setHours(expiresAt.getHours() + 1);
+
+		database.createPasswordResetToken(user.id, token, expiresAt.toISOString());
+
+		return {
+			message:
+				"Se o email existir, você receberá um link para redefinir sua senha",
+			token: token, // Remover em produção
+		};
+	}
+
+	async resetPassword(token: string, newPassword: string) {
+		const resetToken = database.findPasswordResetToken(token);
+
+		if (!resetToken) {
+			throw new Error("Token inválido ou já utilizado");
+		}
+
+		const now = new Date();
+		const expiresAt = new Date(resetToken.expiresAt);
+
+		if (now > expiresAt) {
+			throw new Error("Token expirado. Solicite um novo link de redefinição");
+		}
+
+		const hashedPassword = await bcrypt.hash(newPassword, 8);
+
+		database.updateUserPassword(resetToken.userId, hashedPassword);
+
+		database.markPasswordResetTokenAsUsed(token);
+
+		return {
+			message: "Senha redefinida com sucesso",
 		};
 	}
 }
