@@ -37,12 +37,12 @@ export default function NutritionList() {
 				}
 
 				return response.data;
-			} catch (e: any) {
-				console.error("Erro ao buscar planos nutricionais:", e);
+			} catch (err: any) {
+				console.error("Erro ao buscar planos nutricionais:", err);
 
 				if (
-					e.response?.status === 401 ||
-					e.message === "Usuário não autenticado"
+					err.response?.status === 401 ||
+					err.message === "Usuário não autenticado"
 				) {
 					Alert.alert("Sessão expirada", "Por favor, faça login novamente.", [
 						{
@@ -53,12 +53,12 @@ export default function NutritionList() {
 				}
 
 				const errorMessage =
-					e.response?.data?.error ||
-					e.message ||
+					err.response?.data?.err ||
+					err.message ||
 					"Erro ao carregar planos nutricionais. Tente novamente.";
 
 				const serverError = new Error(errorMessage);
-				(serverError as any).response = e.response;
+				(serverError as any).response = err.response;
 
 				throw serverError;
 			}
