@@ -48,11 +48,11 @@ export default function Login() {
 			await login(token, user);
 
 			navigation.navigate("NutritionList");
-		} catch (error: any) {
-			console.error("Erro no login:", error);
+		} catch (err: any) {
+			console.error("Erro no login:", err);
 			const errorMessage =
-				error.response?.data?.error ||
-				error.message ||
+				err.response?.data?.err ||
+				err.message ||
 				"Erro ao fazer login. Verifique sua conexão e tente novamente.";
 			Alert.alert("Erro ao fazer login", errorMessage);
 		} finally {
@@ -90,7 +90,10 @@ export default function Login() {
 			/>
 
 			<View style={styles.forgetPasswordContainer}>
-				<TouchableOpacity style={styles.forgetPassword}>
+				<TouchableOpacity
+					style={styles.forgetPassword}
+					onPress={() => navigation.navigate("ForgotPassword")}
+				>
 					<Text style={styles.forgetPassword}>Esqueci minha senha</Text>
 				</TouchableOpacity>
 			</View>
