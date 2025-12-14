@@ -44,9 +44,9 @@ class GetNutritionPlanController {
 			};
 
 			return reply.send({ plan: parsedPlan });
-		} catch (error: any) {
+		} catch (err: any) {
 			return reply.code(400).send({
-				error: error.message || "Erro ao buscar plano nutricional",
+				error: err.message || "Erro ao buscar plano nutricional",
 			});
 		}
 	}
