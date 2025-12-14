@@ -55,11 +55,11 @@ export default function Register() {
 
 			Alert.alert("Sucesso", "Conta criada com sucesso!");
 			navigation.navigate("Submit");
-		} catch (error: any) {
-			console.error("Erro no registro:", error);
+		} catch (err: any) {
+			console.error("Erro no registro:", err);
 			const errorMessage =
-				error.response?.data?.error ||
-				error.message ||
+				err.response?.data?.err ||
+				err.message ||
 				"Erro ao criar conta. Verifique sua conexão e tente novamente.";
 			Alert.alert("Erro ao criar conta", errorMessage);
 		} finally {
