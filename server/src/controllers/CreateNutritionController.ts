@@ -23,7 +23,7 @@ class CreateNutritionController {
 		try {
 			const req = request as AuthenticatedRequest;
 
-			// Validar se o usuário está autenticado
+			// Validar se o usuário está autenticado.
 			if (!req.user || !req.user.userId) {
 				console.error("Erro: usuário não autenticado", req.user);
 				return reply.code(401).send({
@@ -51,10 +51,10 @@ class CreateNutritionController {
 
 			reply.header("Content-Type", "application/json; charset=utf-8");
 			reply.send(nutrition);
-		} catch (error: any) {
-			console.error("Erro no CreateNutritionController:", error);
+		} catch (err: any) {
+			console.error("Erro no CreateNutritionController:", err);
 			return reply.code(400).send({
-				error: error.message || "Erro ao criar plano nutricional",
+				error: err.message || "Erro ao criar plano nutricional",
 			});
 		}
 	}
