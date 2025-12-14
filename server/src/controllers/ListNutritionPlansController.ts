@@ -23,9 +23,9 @@ class ListNutritionPlansController {
 			}));
 
 			return reply.send({ plans: parsedPlans });
-		} catch (error: any) {
+		} catch (err: any) {
 			return reply.code(400).send({
-				error: error.message || "Erro ao listar planos nutricionais",
+				error: err.message || "Erro ao listar planos nutricionais",
 			});
 		}
 	}
