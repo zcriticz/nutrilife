@@ -92,12 +92,12 @@ export default function Nutrition() {
 					}
 
 					return response.data;
-				} catch (e: any) {
-					console.error("Erro ao buscar dados da API:", e);
+				} catch (err: any) {
+					console.error("Erro ao buscar dados da API:", err);
 
 					if (
-						e.response?.status === 401 ||
-						e.message === "Usuário não autenticado"
+						err.response?.status === 401 ||
+						err.message === "Usuário não autenticado"
 					) {
 						Alert.alert("Sessão expirada", "Por favor, faça login novamente.", [
 							{
@@ -107,7 +107,7 @@ export default function Nutrition() {
 						]);
 					}
 
-					if (e.response?.status === 404) {
+					if (err.response?.status === 404) {
 						Alert.alert(
 							"Plano não encontrado",
 							"O plano nutricional solicitado não foi encontrado.",
@@ -121,12 +121,12 @@ export default function Nutrition() {
 					}
 
 					const errorMessage =
-						e.response?.data?.error || e.message || planId
+						err.response?.data?.error || err.message || planId
 							? "Erro ao carregar plano nutricional. Tente novamente."
 							: "Erro ao criar plano nutricional. Tente novamente.";
 
 					const serverError = new Error(errorMessage);
-					(serverError as any).response = e.response;
+					(serverError as any).response = err.response;
 
 					throw serverError;
 				}
@@ -172,7 +172,7 @@ export default function Nutrition() {
 					style={{
 						marginTop: 20,
 						padding: 10,
-						backgroundColor: "#4CAF50",
+						backgroundColor: "#048c4c",
 						borderRadius: 8,
 					}}
 					onPress={() => navigation.navigate("Submit")}
