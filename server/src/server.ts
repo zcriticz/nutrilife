@@ -7,26 +7,24 @@ import { routes } from "./routes";
 const app = Fastify({ logger: true });
 
 app.setErrorHandler((error, request, reply) => {
-  reply.code(400).send({ error: error.message });
+	reply.code(400).send({ error: error.message });
 });
 
 const start = async () => {
-  // Registrar CORS
-  app.register(cors);
+	app.register(cors);
 
-  // Registrar JWT
-  app.register(jwt, {
-    secret: process.env.JWT_SECRET || "nutrilife-secret-key-change-in-production",
-  });
+	app.register(jwt, {
+		secret:
+			process.env.JWT_SECRET || "nutrilife-secret-key-change-in-production",
+	});
 
-  // Registrar rotas
-  app.register(routes);
+	app.register(routes);
 
-  try {
-    await app.listen({ port: 3333, host: "0.0.0.0" });
-  } catch (e) {
-    console.log(e);
-  }
+	try {
+		await app.listen({ port: 3333, host: "0.0.0.0" });
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 start();
