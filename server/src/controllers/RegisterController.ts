@@ -1,44 +1,43 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { AuthService } from "../services/AuthService";
+import "@fastify/jwt";
 
 export interface RegisterRequest {
-  email: string;
-  password: string;
-  name?: string;
+	email: string;
+	password: string;
+	name: string;
 }
 
 class RegisterController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { email, password, name } = request.body as RegisterRequest;
+	async handle(request: FastifyRequest, reply: FastifyReply) {
+		try {
+			const { email, password, name } = request.body as RegisterRequest;
 
-      if (!email || !password) {
-        return reply.code(400).send({
-          error: "Email e senha são obrigatórios",
-        });
-      }
+			if (!email || !password || !name) {
+				return reply.code(400).send({
+					error: "Email, senha e nome são obrigatórios",
+				});
+			}
 
-      const authService = new AuthService();
-      const user = await authService.register({ email, password, name });
+			const authService = new AuthService();
+			const user = await authService.register({ email, password, name });
 
-      // Gerar token JWT
-      const token = request.server.jwt.sign({
-        userId: user.id,
-        email: user.email,
-      });
+			const token = request.server.jwt.sign({
+				userId: user.id,
+				email: user.email,
+			});
 
-      return reply.send({
-        user,
-        token,
-      });
-    } catch (error: any) {
-      console.error("Erro ao registrar usuário:", error);
-      return reply.code(400).send({
-        error: error.message || "Erro ao criar usuário",
-      });
-    }
-  }
+			return reply.send({
+				user,
+				token,
+			});
+		} catch (err: any) {
+			console.error("Erro ao registrar usuário:", err);
+			return reply.code(400).send({
+				error: err.message || "Erro ao criar usuário",
+			});
+		}
+	}
 }
 
 export { RegisterController };
-
