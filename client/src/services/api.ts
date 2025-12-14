@@ -5,14 +5,11 @@ import { Platform } from "react-native";
 const getBaseURL = () => {
 	if (__DEV__) {
 		if (Platform.OS === "android") {
-			// Android Emulator
 			return "http://10.0.2.2:3333";
 		} else if (Platform.OS === "ios") {
-			// iOS Simulator
 			return "http://localhost:3333";
 		}
 	}
-	// IP Localy
 	return "http://192.168.0.8:3333";
 };
 
