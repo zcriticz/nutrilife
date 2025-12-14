@@ -142,11 +142,11 @@ class CreateNutritionService {
 			);
 
 			return { data: jsonObject, id: nutritionPlan.id };
-		} catch (e: any) {
-			console.error("Erro no CreateNutritionService:", e);
-			console.error("Stack trace:", e.stack);
+		} catch (err: any) {
+			console.error("Erro no CreateNutritionService:", err);
+			console.error("Stack trace:", err.stack);
 
-			const errorMessage = e.message || e.toString() || "";
+			const errorMessage = err.message || err.toString() || "";
 
 			if (
 				errorMessage.includes("API_KEY") ||
